@@ -1,0 +1,39 @@
+From 624621d6f94d6fad89da717490d9329cd714d36e Mon Sep 17 00:00:00 2001
+From: "Christopher M. Cantalupo" <christopher.m.cantalupo@intel.com>
+Date: Fri, 6 Oct 2017 09:44:05 -0500
+Subject: [PATCH] Fix potential overflow issue with error messages in
+ PlatformImp.cpp.
+
+Change-Id: I02339b56d429c8c7730697c6012fdb49ff0e15b4
+Signed-off-by: Christopher M. Cantalupo <christopher.m.cantalupo@intel.com>
+---
+ src/PlatformImp.cpp | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/PlatformImp.cpp b/src/PlatformImp.cpp
+index b19f759..99aeb4a 100644
+--- a/src/PlatformImp.cpp
++++ b/src/PlatformImp.cpp
+@@ -363,15 +363,15 @@ namespace geopm
+         fd = open(m_msr_path, O_RDWR);
+         //report errors
+         if (fd < 0) {
+-            char error_string[NAME_MAX];
++            char error_string[2 * NAME_MAX];
+             if (errno == ENXIO || errno == ENOENT) {
+-                snprintf(error_string, NAME_MAX, "device %s does not exist", m_msr_path);
++                snprintf(error_string, 2 * NAME_MAX, "device %s does not exist", m_msr_path);
+             }
+             else if (errno == EPERM || errno == EACCES) {
+-                snprintf(error_string, NAME_MAX, "permission denied opening device %s", m_msr_path);
++                snprintf(error_string, 2 * NAME_MAX, "permission denied opening device %s", m_msr_path);
+             }
+             else {
+-                snprintf(error_string, NAME_MAX, "system error opening cpu device %s", m_msr_path);
++                snprintf(error_string, 2 * NAME_MAX, "system error opening cpu device %s", m_msr_path);
+             }
+             throw Exception(error_string, GEOPM_ERROR_MSR_OPEN, __FILE__, __LINE__);
+ 
+-- 
+1.8.3.1
+

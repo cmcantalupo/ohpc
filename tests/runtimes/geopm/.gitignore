@@ -1,0 +1,8 @@
+test-driver
+tests/tutorial_4
+tests/*.o
+tests/tutorial_4-tutorial_4.o
+tests/tutorial_4-tutorial_region.o
+tests/*.log
+tests/*.trs
+
