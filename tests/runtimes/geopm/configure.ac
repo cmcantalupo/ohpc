@@ -3,7 +3,7 @@
 #
 
 AC_PREREQ(2.59)
-AC_INIT(geopm, 0.3.0, [https://github.com/openhpc/ohpc])
+AC_INIT(geopm, 0.4.0, [https://github.com/openhpc/ohpc])
 AM_INIT_AUTOMAKE([foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
