@@ -39,6 +39,7 @@ BuildRequires:  %kernel_module_package_buildreqs
 BuildRequires:  systemd
 %if 0%{?sles_version} || 0%{?suse_version}
 BuildRequires:  udev
+#!BuildIgnore: post-build-checks
 %endif
 
 %kernel_module_package default
