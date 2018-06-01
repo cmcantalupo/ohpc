@@ -8,9 +8,15 @@ status=0
 source ./common/TEST_ENV  || exit 1
 source ./common/functions || exit 1
 
-prun(){
-	geopm-prun "${@}"
+mpiexec.hydra() {
+	mpiexec.hydra -bind-to core
 }
+export -f mpiexec.hydra
+
+mpirun() {
+	mpirun -bind-to core
+}
+export -f mpirun
 
 cd perf-tools/geopm || exit 1
 
