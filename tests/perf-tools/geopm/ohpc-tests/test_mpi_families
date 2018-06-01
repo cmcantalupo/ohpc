@@ -8,13 +8,15 @@ status=0
 source ./common/TEST_ENV  || exit 1
 source ./common/functions || exit 1
 
+export GEOPM_MPIEXEC_HYDRA=false
 mpiexec.hydra() {
-	mpiexec.hydra -bind-to core
+	$GEOPM_MPIEXEC_HYDRA -bind-to core
 }
 export -f mpiexec.hydra
 
+export GEOPM_MPIRUN=false
 mpirun() {
-	mpirun -bind-to core
+	$GEOPM_MPIRUN -bind-to core
 }
 export -f mpirun
 
@@ -41,6 +43,8 @@ for compiler in $COMPILER_FAMILIES ; do
 		module load $compiler || exit 1
 		module load $mpi      || exit 1
 		module load geopm     || exit 1
+		GEOPM_MPIEXEC_HYDRA=$(which mpiexec.hydra || echo 'false')
+		GEOPM_MPIRUN=$(which mpirun || echo 'false')
 
 		./configure           || exit 1
 		make clean            || exit 1
