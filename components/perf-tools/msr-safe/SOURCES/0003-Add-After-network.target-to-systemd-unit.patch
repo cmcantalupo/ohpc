@@ -1,0 +1,34 @@
+From 5ac60a264cc310594e988698806d108bd519a0ca Mon Sep 17 00:00:00 2001
+From: Ben Allen <bsallen@alcf.anl.gov>
+Date: Fri, 12 Oct 2018 16:47:06 +0000
+Subject: [PATCH 3/4] Add After=network.target to systemd unit.
+
+Start msr-safe after network.target has been reached in an attempt start it
+after any units that commonly load kernel modules. msr-safe appears to
+dynamically pick its devices' MAJOR number. If kernel modules with hard coded
+MAJOR numbers are loaded after msr-safe, there is a good chance for conflict,
+causing the later loaded kernel module to fail to load.
+
+Work around for #45.
+
+Signed-off-by: Ben Allen <bsallen@alcf.anl.gov>
+---
+ rpm/msr-safe.service | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rpm/msr-safe.service b/rpm/msr-safe.service
+index 9534250..a34af13 100644
+--- a/rpm/msr-safe.service
++++ b/rpm/msr-safe.service
+@@ -6,7 +6,7 @@
+ 
+ [Unit]
+ Description=Sets default MSR whitelist
+-After=nss-user-lookup.target nslcd.service
++After=nss-user-lookup.target nslcd.service network.target
+ 
+ [Service]
+ Type=oneshot
+-- 
+1.8.3.1
+

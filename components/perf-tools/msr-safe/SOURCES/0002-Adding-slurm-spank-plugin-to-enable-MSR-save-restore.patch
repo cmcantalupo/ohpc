@@ -1,7 +1,7 @@
 From 7fe73cd2eeabcb456ced6c59b512cee1e0e4aeb3 Mon Sep 17 00:00:00 2001
 From: "Christopher M. Cantalupo" <christopher.m.cantalupo@intel.com>
 Date: Mon, 10 Sep 2018 19:31:49 -0700
-Subject: [PATCH 2/2] Adding slurm spank plugin to enable MSR save restore.
+Subject: [PATCH 2/4] Adding slurm spank plugin to enable MSR save restore.
 
 - Modified REAME to discuss importance of save/restore on
   shared HPC systems.
