@@ -22,7 +22,7 @@
 
 Name:          %{pname}-%{compiler_family}-%{mpi_family}%{PROJ_DELIM}
 Summary:       Global Extensible Open Power Manager
-Version:       1.0.0
+Version:       1.1.0
 Release:       1
 License:       BSD-3-Clause
 Group:         %{PROJ_NAME}/perf-tools
@@ -32,13 +32,22 @@ BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
 BuildRequires: libtool-ltdl-devel
+%if 0%{?centos_version} >= 8 || 0%{?rhel_version} >= 8
+BuildRequires: python2
+BuildRequires: python2-devel
+%else
 BuildRequires: python
 BuildRequires: python-devel
+%endif
 BuildRequires: unzip
 BuildRequires: zlib-devel
-
-%if 0%{?suse_version} >= 1320
+%if 0%{?suse_version} >= 1320 || 0%{?sles_version} >= 1320
 BuildRequires: openssh
+%endif
+%if 0%{?suse_version} || 0%{?sles_version}
+BuildRequires: libelf-devel
+%else
+BuildRequires: elfutils-libelf-devel
 %endif
 
 %description
@@ -79,6 +88,7 @@ including support for static control.
 test -f configure || ./autogen.sh
 ./configure --prefix=%{install_path} \
             --disable-doc \
+            --with-python=%{__python2} \
             || ( cat config.log && false )
 %{__make}
 
@@ -113,7 +123,7 @@ module-whatis "URL %{url}"
 set     version             %{version}
 
 prepend-path    PATH                %{install_path}/bin
-prepend-path    PYTHONPATH          %{install_path}/lib/python2.7/site-packages
+prepend-path    PYTHONPATH          %{install_path}/lib/python%{python2_version}/site-packages
 prepend-path    INCLUDE             %{install_path}/include
 prepend-path    LD_LIBRARY_PATH     %{install_path}/lib
 prepend-path    MANPATH             %{install_path}/share/man
